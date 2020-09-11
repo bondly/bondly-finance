@@ -57,7 +57,7 @@ information.
 Regardless of how you seek to contribute, we'd love to have you as part of the
 Bondly developer community!
 
-Check out our [Developer Community Slack](#)
+Check out our [Developer Community Discord](https://discord.com/invite/94BCJg)
 for more information about contributing to Bondly.
 
 ## License
