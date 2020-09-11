@@ -1,0 +1,19 @@
+{
+  "name": "p2pswap-solidity",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.1.0",
+    "truffle": "^5.1.30",
+    "truffle-flattener": "^1.4.4"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^3.0.2"
+  }
+}
