@@ -19,9 +19,9 @@
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"
     alt="PRs welcome!" />
   </a>
-  <a href="https://twitter.com/intent/follow?screen_name="BondlyFinance">
+  <a href="https://twitter.com/intent/follow?screen_name=BondlyFinance">
     <img
-    src="https://img.shields.io/twitter/follow/decent_labs.svg?label=Follow%20BondlyFinance"
+    src="https://img.shields.io/twitter/follow/BondlyFinance.svg?label=Follow%20BondlyFinance"
     alt="Follow @BondlyFinance" />
   </a>
 </p>
