@@ -30,11 +30,11 @@
 
 - **Interoperable.** Bondly enables transactions across many chains.
 
-- **Resilient.** Create long-lasting systems using recurring crypto payments.
+- **Innovative.** Connect Bondly to your marketplace and create trusted transactions between vendors and customers.
 
 <p align="center">
   <a href="https://bondly.finance">
-    <b>Learn how to use Bondly for your next DeFi project.</b>
+    <b>Learn more about Bondly here.</b>
   </a>
 </p>
 
