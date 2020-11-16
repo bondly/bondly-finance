@@ -122,6 +122,28 @@ interface ILiquidity {
     function emitJoin(address _taker, uint256 _ethVal) external;
 }
 
+interface IStats {
+    function stats() external view returns(address[] memory,  uint256[] memory, uint256);
+    function clear() external;
+}
+
+interface IStaking {
+    function hastaked(address _who) external returns(bool);
+    function stats() external view returns(address[] memory,  uint256[] memory, uint256);
+    function clear() external;
+}
+
+interface IFee {
+    function emitFee(address _addr, uint256 _ethVal) payable external;
+}
+
+interface Events {
+    event CreatePool(uint32 indexed id, address indexed maker, bool priv, address tracker, uint256 amount, uint256 rate, uint256 units);
+    event Join(uint32 indexed id, address indexed taker, bool priv, uint256 ethAmount, address tracker, uint256 amount);
+    event Withdraw(uint32 indexed id, address indexed sender, uint256 amount, uint32 tp);
+    event Close(uint32 indexed id, bool priv);
+}
+
 contract LiquidityStats is Ownable {
     using SafeMath for uint256;
 
@@ -190,11 +212,6 @@ contract LiquidityStats is Ownable {
     }
 }
 
-interface IStats {
-    function stats() external view returns(address[] memory,  uint256[] memory, uint256);
-    function clear() external;
-}
-
 contract LiquidityMiner is Operable, RewardERC20, Destructor {
     address public liquidityStatsAddr;
 
@@ -221,30 +238,12 @@ contract LiquidityMiner is Operable, RewardERC20, Destructor {
 }
 
 
-interface IStaking {
-    function hastaked(address _who) external returns(bool);
-    function stats() external view returns(address[] memory,  uint256[] memory, uint256);
-    function clear() external;
-}
-
-interface IFee {
-    function emitFee(address _addr, uint256 _ethVal) payable external;
-}
-
-
 contract FeeStats {
     event Fee(address _addr, uint256 _ethVal);
     function emitFee(address _addr, uint256 _ethVal) payable public {
         require(_ethVal==msg.value, "fee value");
         emit Fee(_addr, _ethVal);
     }
-}
-
-interface Events {
-    event CreatePool(uint32 indexed id, address indexed maker, bool priv, address tracker, uint256 amount, uint256 rate, uint256 units);
-    event Join(uint32 indexed id, address indexed taker, bool priv, uint256 ethAmount, address tracker, uint256 amount);
-    event Withdraw(uint32 indexed id, address indexed sender, uint256 amount, uint32 tp);
-    event Close(uint32 indexed id, bool priv);
 }
 
 contract AbstractFactory is Ownable {

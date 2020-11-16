@@ -1,6 +1,6 @@
 pragma solidity 0.6.3;
 
-import "./mintable.sol";
+import "openzeppelin-solidity/contracts/access/Ownable.sol";
 
 
 // MasterChef is the master of Sushi. He can make Sushi and he is a fair guy.
