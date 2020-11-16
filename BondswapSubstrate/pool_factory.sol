@@ -467,7 +467,7 @@ contract PrivFixedPoolFactory is Events, AbstractFactory, Destructor {
         // check taker limit
         require(_pool.takers[_index] == msg.sender, "check taker limit");
 
-        uint _order = msg.value.mul(_pool.tokenRate).div(_pool.units);
+        uint _order = value.mul(_pool.tokenRate).div(_pool.units);
         require(_order>0, "check taker amount");
         require(_order<=_pool.tokenAmount, "check left token amount");
 
@@ -480,8 +480,8 @@ contract PrivFixedPoolFactory is Events, AbstractFactory, Destructor {
 
         IERC20(_pool.tokenaddr).transfer(_taker, _order);
 
-        emit Join(_id, msg.sender, true, msg.value, _pool.tokenaddr, _order);
-        joinPoolAfter(msg.sender, msg.value);
+        emit Join(_id, msg.sender, true, value, _pool.tokenaddr, _order);
+        joinPoolAfter(msg.sender, value);
     }
 
     function privFixedPoolClose(uint32 _id) public {
