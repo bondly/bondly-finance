@@ -617,5 +617,12 @@ contract BidPoolFactory is Events, AbstractFactory, Destructor {
         uint256 _amount = _pool.takerAmountMap[_taker];
         return _amount;
     }
+
+    function bidTakerOrderAmount(uint32 _id, address _taker) public view returns(uint256) {
+        BidPool storage _pool = bidPools[_id];
+        uint256 _amount = _pool.takerAmountMap[_taker];
+        uint256 _order = _amount.mul(_pool.tokenAmount).div(_pool.takerAmountTotal);
+        return _order;
+    }
 }
 
