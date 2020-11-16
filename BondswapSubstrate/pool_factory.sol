@@ -247,6 +247,7 @@ contract FeeStats {
 }
 
 contract AbstractFactory is Ownable {
+    using SafeMath for uint256;
     address public liquidtyAddr;
     address public stakeAddr;
     address public feeAddr;
@@ -271,18 +272,18 @@ contract AbstractFactory is Ownable {
     }
 
     modifier takerFee(uint256 _value) {
-        require(_value>0, "check taker value, value must be gt 0");
+        require(_value > 0, "check taker value, value must be gt 0");
         uint256 _fee = 0;
-        if(takerFeeRate>0){
-            _fee = _value * takerFeeRate / takerFeeBase;
+        if(takerFeeRate > 0){
+            _fee = _value.mul(takerFeeRate).div(takerFeeBase);
             require(_fee > 0, "check taker fee, fee must be gt 0");
             require(_fee < _value, "check taker fee, fee must be le value");
-            require(feeAddr!=address(0), "check fee address, fail");
+            require(feeAddr != address(0), "check fee address, fail");
 
             // transfer fee to owner
             IFee(feeAddr).emitFee{value:_fee}(msg.sender, _fee);
         }
-        require(_value+_fee<=msg.value,"check taker fee and value, total must be le value");
+        require(_value.add(_fee) <= msg.value,"check taker fee and value, total must be le value");
         _;
     }
 
@@ -336,9 +337,9 @@ contract FixedPoolFactory is Events, AbstractFactory, Destructor {
 
 
     function createFixedPool(string memory _name, address _tracker, uint256 _amount, uint256 _rate, uint256 _units, uint32 _endTime, bool _onlyHolder) makerFee onlyBeforeDestruct payable public {
-        require(_amount>0, "check create pool amount");
-        require(_rate>0, "check create pool rate");
-        require(_units>0, "check create pool units");
+        require(_amount > 0, "check create pool amount");
+        require(_rate > 0, "check create pool rate");
+        require(_units > 0, "check create pool units");
 
         // transfer erc20 token from maker
         IERC20(_tracker).transferFrom(msg.sender, address(this), _amount);
@@ -373,8 +374,8 @@ contract FixedPoolFactory is Events, AbstractFactory, Destructor {
         require(now < _pool.endTime, "check before end time");
 
         uint _order = _value.mul(_pool.tokenRate).div(_pool.units);
-        require(_order>0, "check taker amount");
-        require(_order<=_pool.tokenAmount, "check left token amount");
+        require(_order > 0, "check taker amount");
+        require(_order <= _pool.tokenAmount, "check left token amount");
 
         address _taker = msg.sender; // todo test gas
 
@@ -427,9 +428,9 @@ contract PrivFixedPoolFactory is Events, AbstractFactory, Destructor {
     function createPrivFixedPool(string memory  _name, address _tracker, uint256 _amount, uint256 _rate, uint256 _units, uint32 _endTime, address[] memory _takers)
     makerFee onlyBeforeDestruct payable public {
 
-        require(_amount>0, "check create pool amount");
-        require(_rate>0, "check create pool amount");
-        require(_units>0, "check create pool amount");
+        require(_amount > 0, "check create pool amount");
+        require(_rate > 0, "check create pool amount");
+        require(_units > 0, "check create pool amount");
 
 
         // transfer erc20 token from maker
@@ -605,7 +606,7 @@ contract BidPoolFactory is Events, AbstractFactory, Destructor {
             return;
         }
         uint256 _order = _pool.makerReceiveTotal;
-        require( _order>0, "check received value");
+        require( _order > 0, "check received value");
         _pool.makerReceiveTotal = 0;
         msg.sender.transfer(_order);
         emit Withdraw(_id, msg.sender, _order, uint32(1));

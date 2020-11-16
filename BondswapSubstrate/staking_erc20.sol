@@ -4,6 +4,7 @@ import "./mintable.sol";
 
 
 contract StakingReward is Operable, Destructor {
+    using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
     struct UserInfo {
@@ -24,8 +25,8 @@ contract StakingReward is Operable, Destructor {
     }
 
     function setReleaseSec(uint256 sec) onlyOwner public{
-        require(sec>=0, "relase time limit");
-        require(sec<7*24*60*60, "relase time limit");
+        require(sec >= 0, "relase time limit");
+        require(sec < 7*24*60*60, "relase time limit");
         releaseSec = sec;
     }
 
@@ -36,8 +37,8 @@ contract StakingReward is Operable, Destructor {
     function pendingStaking(address account, uint256 amount) onlyOperator onlyBeforeDestruct public {
         require(account != address(0), "pending staking address");
         UserInfo storage u = userInfo[account];
-        u.pendingStaking += amount;
-        u.stakingReleaseTime = block.timestamp + releaseSec;
+        u.pendingStaking = u.pendingStaking.add(amount);
+        u.stakingReleaseTime = block.timestamp.add(releaseSec);
     }
 
     function withdrawStaking() onlyBeforeDestruct public {
@@ -52,7 +53,7 @@ contract StakingReward is Operable, Destructor {
     function pendingReward(address account, uint256 amount) onlyOperator onlyBeforeDestruct public {
         require(account != address(0), "pending reward address");
         UserInfo storage u = userInfo[account];
-        u.pendingReward += amount;
+        u.pendingReward = u.pendingReward.add(amount);
     }
 
     function withdrawReward() onlyBeforeDestruct public {
